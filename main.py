@@ -10,7 +10,7 @@ Base = declarative_base()
 
 
 class InvTypes(Base):
-    __tablename__ = 'invtypes'
+    __tablename__ = 'invTypes'
     typeID = Column(Integer, primary_key=True)
     groupID = Column(Integer)
     typeName = Column(String)
@@ -31,7 +31,7 @@ class InvTypes(Base):
 
 
 class RamActivities(Base):
-    __tablename__ = "ramactivities"
+    __tablename__ = "ramActivities"
     activityID = Column(Integer, primary_key=True)
     activityName = Column(String(100))
     IconNo = Column(String(5))
@@ -40,7 +40,7 @@ class RamActivities(Base):
 
 
 class InvCategories(Base):
-    __tablename__ = "invcategories"
+    __tablename__ = "invCategories"
     categoryID = Column(Integer, primary_key=True)
     categoryName = Column(String(100))
     iconID = Column(Integer)
@@ -48,47 +48,52 @@ class InvCategories(Base):
 
 
 class InvGroups(Base):
-    _tablename__ = "invgroups"
+    __tablename__ = "invGroups"
     groupID = Column(Integer, primary_key=True)
-    categoryID = Column(Integer, ForeignKey("invcategories.categoryID"))
+    categoryID = Column(Integer, ForeignKey("invCategories.categoryID"))
     groupName = Column(String(100))
     iconID = Column(Integer)
     useBasePrice = Column(Boolean)
 
 
 class IndustryActivityProducts(Base):
-    __tablename__ = "industryactivityproducts"
-    typeID = Column(Integer, ForeignKey("invtypes.typeID"), primary_key=True)
-    activityID = Column(Integer, ForeignKey("ramactivities.activityID"), primary_key=True)
-    productTypeID = Column(Integer, ForeignKey("invtypes.typeID"), primary_key=True)
+    __tablename__ = "industryActivityProducts"
+    typeID = Column(Integer, ForeignKey("invTypes.typeID"), primary_key=True)
+    activityID = Column(Integer, ForeignKey("ramActivities.activityID"),
+                        primary_key=True)
+    productTypeID = Column(Integer, ForeignKey("invTypes.typeID"),
+                           primary_key=True)
     quantity = Column(Integer)
 
 
 class IndustryActivityMaterials(Base):
-    __tablename__ = "industryactivitymaterials"
-    typeID = Column(Integer, ForeignKey("invtypes.typeID"), primary_key=True)
-    activityID = Column(Integer, ForeignKey("ramactivities.activityID"), primary_key=True)
-    materialTypeID = Column(Integer, primary_key=True)
+    __tablename__ = "industryActivityMaterials"
+    typeID = Column(Integer, ForeignKey("invTypes.typeID"), primary_key=True)
+    activityID = Column(Integer, ForeignKey("ramActivities.activityID"),
+                        primary_key=True)
+    materialTypeID = Column(Integer, ForeignKey("invTypes.typeID"),
+                            primary_key=True)
     quantity = Column(Integer)
 
-    invtypes = relationship("InvTypes", back_populates="industryactivitymaterials")
+    invTypes = relationship("InvTypes",
+                            back_populates="industryActivityMaterials")
 
 
 class IndustryActivityTime(Base):
-    __tablename__ = "industryactivity"
-    typeID = Column(Integer, ForeignKey("invtypes.typeID"), primary_key=True)
-    activityID = Column(Integer, ForeignKey("ramactivities.activityID"),
+    __tablename__ = "industryActivity"
+    typeID = Column(Integer, ForeignKey("invTypes.typeID"), primary_key=True)
+    activityID = Column(Integer, ForeignKey("ramActivities.activityID"),
                         primary_key=True)
     time = Column(Integer)
 
 
 class IndustryActivityProbabilities(Base):
-    __tablename__ = "industryactivityprobabilities"
-    typeID = Column(Integer, ForeignKey("invtypes.typeID"),
+    __tablename__ = "industryActivityProbabilities"
+    typeID = Column(Integer, ForeignKey("invTypes.typeID"),
                     primary_key=True)
-    activityID = Column(Integer, ForeignKey("ramactivities.activityID"),
+    activityID = Column(Integer, ForeignKey("ramActivities.activityID"),
                         primary_key=True)
-    productTypeID = Column(Integer, ForeignKey("invtypes.typeID"),
+    productTypeID = Column(Integer, ForeignKey("invTypes.typeID"),
                            primary_key=True)
     probability = Column(Numeric)
 
