@@ -1,0 +1,48 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from sqlalchemy import create_engine, ForeignKey\nfrom sqlalchemy.ext.declarative import declarative_base\nfrom sqlalchemy import Column, Integer, String, Float, Boolean\nfrom sqlalchemy.orm import sessionmaker, relationship\n\nengine = create_engine('sqlite:///sqlite-latest.sqlite')\nSession = sessionmaker(bind=engine)\n\nBase = declarative_base()\n\n\nclass InvTypes(Base):\n    __tablename__ = 'invtypes'\n\n    typeID = Column(Integer, primary_key=True)\n    groupID = Column(Integer)\n    typeName = Column(String)\n    description = Column(String)\n    mass = Column(Float)\n    volume = Column(Float)\n    capacity = Column(Float)\n    portionSize = Column(Integer)\n    raceID = Column(Integer)\n    basePrice = Column(Float)\n    published = Column(Boolean)\n    marketGroupID = Column(Integer)\n    iconID = Column(Integer)\n    soundID = Column(Integer)\n    graphicID = Column(Integer)\n\n    industryactivitymaterials = relationship(\"IndustryActivityMaterials\")\n\n\nclass IndustryActivityMaterials(Base):\n    __tablename__ = 'industryactivitymaterials'\n    typeID = Column(Integer, ForeignKey(\"invtypes.typeID\"))\n    activityID = Column(Integer)\n    materialTypeID = Column(Integer)\n    quantity = Column(Integer)\n\n    invtypes = relationship(\"InvTypes\", back_populates=\"industryactivitymaterials\")\n\n\nsession = Session()\nfor name in session.query(InvTypes.typeName).filter(InvTypes.typeID == 34):\n    print(name)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- main.py	(revision 10ef04bcbd334ef02468d5410e27cdd3d4a13618)
++++ main.py	(date 1605179755975)
+@@ -31,16 +31,18 @@
+     industryactivitymaterials = relationship("IndustryActivityMaterials")
+ 
+ 
++
++
+ class IndustryActivityMaterials(Base):
+     __tablename__ = 'industryactivitymaterials'
+-    typeID = Column(Integer, ForeignKey("invtypes.typeID"))
+-    activityID = Column(Integer)
+-    materialTypeID = Column(Integer)
++    typeID = Column(Integer, ForeignKey("invtypes.typeID"), primary_key=True)
++    activityID = Column(Integer, primary_key=True)
++    materialTypeID = Column(Integer, primary_key=True)
+     quantity = Column(Integer)
+ 
+     invtypes = relationship("InvTypes", back_populates="industryactivitymaterials")
+ 
+ 
+ session = Session()
+-for name in session.query(InvTypes.typeName).filter(InvTypes.typeID == 34):
++for name, _ in session.query(InvTypes.typeName, InvTypes.description).filter(InvTypes.typeID == 34):
+     print(name)
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Pipenv (test)\" project-jdk-type=\"Python SDK\" />\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 10ef04bcbd334ef02468d5410e27cdd3d4a13618)
++++ .idea/misc.xml	(date 1605175326410)
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Pipenv (test)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6 (testenvironment)" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file

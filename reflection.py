@@ -12,7 +12,7 @@ InvTypes = Base.classes.invTypes
 RamActivities = Base.classes.ramActivities
 InvCategories = Base.classes.invCategories
 InvGroups = Base.classes.invGroups
-IndustryActivityTime = Base.classes.industryActivity
+IndustryActivityTime = Base.classes.industryActivity0
 
 
 session = Session(engine)
